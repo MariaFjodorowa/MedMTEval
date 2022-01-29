@@ -1,0 +1,6 @@
+version: "3.9"
+
+services:
+  doc-nlp-en-service:
+    image: mt
+    tty: true
