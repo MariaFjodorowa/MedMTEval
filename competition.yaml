@@ -17,51 +17,28 @@ phases:
         reference_data: reference_data.zip
 leaderboard:
     leaderboards:
-        RESULTS-en-ru: &RESULTS-en-ru
-            label: Results-en-ru
-            rank: 1
         RESULTS-ru-en: &RESULTS-ru-en
           label: Results-ru-en
           rank: 1
     columns:
-        COMET-en-ru:
-          leaderboard: *RESULTS-en-ru
-          label: COMET-en-ru
+        COMET:
+          leaderboard: *RESULTS-ru-en
+          label: COMET
           rank: 1
           numeric_format: 4
-        BLEU-en-ru:
-          leaderboard: *RESULTS-en-ru
-          label: BLEU-en-ru
+        BLEU:
+          leaderboard: *RESULTS-ru-en
+          label: BLEU
           rank: 2
           numeric_format: 4
-        NER-accuracy-en-ru:
-          leaderboard: *RESULTS-en-ru
-          label: NER-accuracy-en-ru
+        NER-accuracy:
+          leaderboard: *RESULTS-ru-en
+          label: NER-accuracy
           rank: 3
           numeric_format: 4
-        ROUGE-L-F1-en-ru:
-          leaderboard: *RESULTS-en-ru
-          label: ROUGE-L-F1-en-ru
-          rank: 4
-          numeric_format: 4
-        COMET-ru-en:
+        ROUGE-L-F1:
           leaderboard: *RESULTS-ru-en
-          label: COMET-ru-en
-          rank: 1
-          numeric_format: 4
-        BLEU-ru-en:
-          leaderboard: *RESULTS-ru-en
-          label: BLEU-ru-en
-          rank: 2
-          numeric_format: 4
-        NER-accuracy-ru-en:
-          leaderboard: *RESULTS-ru-en
-          label: NER-accuracy-ru-en
-          rank: 3
-          numeric_format: 4
-        ROUGE-L-F1-ru-en:
-          leaderboard: *RESULTS-ru-en
-          label: ROUGE-L-F1-ru-en
+          label: ROUGE-L-F1
           rank: 4
           numeric_format: 4
 competition_docker_image: mariafjodorowa/mt-evaluation

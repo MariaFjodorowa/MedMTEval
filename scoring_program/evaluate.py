@@ -56,12 +56,12 @@ def write_outfile(results, output_dir, source_language, target_language):
     logging.info(results)
     output_filename = os.path.join(output_dir, 'scores.txt')
     out_strings = [
-        # f"METEOR-{source_language}-{target_language}:{results[METEOR][METEOR]}\n",
-        f"COMET-{source_language}-{target_language}:{results[COMET][-1]}\n",
-        f"BLEU-{source_language}-{target_language}:{results[BLEU][BLEU]}\n",
-        # f"SACREBLEU-{source_language}-{target_language}:{results[SACREBLEU]['score']}\n",
-        f"NER-accuracy-{source_language}-{target_language}: {results[NER_ACCURACY][-1]}\n",
-        f"ROUGE-L-F1-{source_language}-{target_language}: {results[ROUGE]['rougeL'].mid.fmeasure}\n",
+        # f"METEOR:{results[METEOR][METEOR]}\n",
+        f"COMET:{results[COMET][-1]}\n",
+        f"BLEU:{results[BLEU][BLEU]}\n",
+        # f"SACREBLEU:{results[SACREBLEU]['score']}\n",
+        f"NER-accuracy:{results[NER_ACCURACY][-1]}\n",
+        f"ROUGE-L-F1:{results[ROUGE]['rougeL'].mid.fmeasure}\n",
     ]
     with open(output_filename, 'wb') as f:
         f.write(''.join(out_strings).encode('utf8'))
@@ -73,10 +73,8 @@ def main():
     truth_dir = os.path.join(input_dir, 'ref')
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    answer_path = glob(f"{submit_dir}/*-*.json*")[0]
-    splitted = os.path.split(answer_path)[-1].split(
-        os.extsep)[0].split('-')
-    source_language, target_language = splitted[-2], splitted[-1]
+    answer_path = glob(f"{submit_dir}/*.json*")[0]
+    source_language, target_language = "ru", "en"
     truth_file = os.path.join(truth_dir, "references.jsonl")
     ner = os.path.join(truth_dir, 'ner.json')
     target_ref, source_ref = read_jsonlines(truth_file,
@@ -85,11 +83,7 @@ def main():
     target_pred, source_pred = read_jsonlines(answer_path,
                                               source_language,
                                               target_language)
-    try:
-        assert source_pred == source_ref
-    except AssertionError:
-        raise Exception("File naming is wrong. Name it like ru-en.jsonl,"
-                        "where the first language is the source.")
+    assert source_pred == source_ref
     assert len(target_ref) == len(target_pred)
     bleu_references = [word_tokenize(text) for text in target_ref]
     bleu_references = [[ref] for ref in
