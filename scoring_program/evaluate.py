@@ -8,6 +8,7 @@ from comet import download_model, load_from_checkpoint
 from nltk import word_tokenize
 import logging
 
+
 BLEU = 'bleu'
 ROUGE = 'rouge'
 SACREBLEU = 'sacrebleu'
@@ -36,7 +37,7 @@ def ner_accuracy(ner, target_ref, target_pred):
         data = json.load(f)
     accuracies = []
     for ref, pred in zip(target_ref, target_pred):
-        accuracy = None
+        accuracy = 1.0
         ner_reference = data.get(ref, [])
         tokenized = word_tokenize(pred)
         if ner_reference:
@@ -47,9 +48,7 @@ def ner_accuracy(ner, target_ref, target_pred):
             accuracies.append(accuracy / len(ner_reference))
         else:
             accuracies.append(accuracy)
-    return accuracies, \
-           sum([acc for acc in accuracies if acc is not None]) / len(
-               target_pred)
+    return accuracies, sum(accuracies) / len(target_pred)
 
 
 def write_outfile(results, output_dir, source_language, target_language):

@@ -2,6 +2,7 @@ title: MedMTEval
 description: Machine translation competition
 image: logo.jpg
 has_registration: True
+end_date: 2022-03-07
 html:
     overview: overview.html
     evaluation: evaluation.html
@@ -10,7 +11,7 @@ html:
 phases:
     1:
         phasenumber: 1
-        label: "First phase"
+        label: "RU-EN"
         start_date: 2022-01-30
         max_submissions: 100
         scoring_program: scoring_program.zip
