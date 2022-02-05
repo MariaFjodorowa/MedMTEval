@@ -6,8 +6,9 @@ from glob import glob
 from datasets import load_metric
 from comet import download_model, load_from_checkpoint
 from nltk import word_tokenize
+import scispacy
+import spacy
 import logging
-
 
 BLEU = 'bleu'
 ROUGE = 'rouge'
@@ -36,15 +37,26 @@ def ner_accuracy(ner, target_ref, target_pred):
     with open(ner, 'r', encoding='utf8') as f:
         data = json.load(f)
     accuracies = []
+    nlp = spacy.load("en_core_sci_sm", exclude=["ner", "parser"])
+    pos_tags = ['PROPN', 'VERB', 'NOUN', 'ADJ']
     for ref, pred in zip(target_ref, target_pred):
         accuracy = 1.0
         ner_reference = data.get(ref, [])
-        tokenized = word_tokenize(pred)
+        lemmas = ' '.join([word.lemma_ for word in nlp(pred) if
+                           word.pos_ in pos_tags])
         if ner_reference:
             accuracy = 0
             for entity in ner_reference:
-                if entity['text'] in tokenized:
+                entity_text = ' '.join(
+                    [word.lemma_ for word in nlp(entity['text']) if
+                     word.pos_ in pos_tags])
+                if (entity_text.lower() in lemmas.lower()) or (
+                        entity['text'] in pred):
                     accuracy += 1
+                else:
+                    logging.info(
+                        f"named entity not translated: {entity['text']},"
+                        f" {pred}, {entity['labels'][0]}")
             accuracies.append(accuracy / len(ner_reference))
         else:
             accuracies.append(accuracy)
