@@ -1,1 +1,2 @@
 transformers=4.8.2
+nltk==3.7
